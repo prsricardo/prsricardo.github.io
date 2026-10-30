@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paulo Ricardo dos Santos</title>
+
+<meta name="description" content="Gestão de contratos de outsourcing de TI: o contrato fala uma língua, a fábrica fala outra, eu respondo pelas duas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: página de serviços em coluna de leitura; o dispositivo central são as "duas línguas" lado a lado e um painel semanal ilustrativo */
+:root{
+  --bg:#f7f8f7; --surface:#ffffff; --fg:#17201e; --muted:#59645f; --line:#dde3e0; --accent:#0d6b5e; --accent-soft:#e3f0ed;
+  --warn:#9a4a1c; --warn-soft:#f8ebe2;
+  --ok:#1f7a3d; --ok-soft:#e4f3e8; --attn:#8a6100; --attn-soft:#fbf1d9; --crit:#a8322b; --crit-soft:#fbe6e4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111614;--surface:#18201d;--fg:#e8eeeb;--muted:#a1ada8;--line:#2a3531;--accent:#5cc3b1;--accent-soft:#1b302b;--warn:#e9a37a;--warn-soft:#33241b;--ok:#7fd39b;--ok-soft:#1a2f21;--attn:#e8c26a;--attn-soft:#332a15;--crit:#f09a92;--crit-soft:#3a1f1d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111614;--surface:#18201d;--fg:#e8eeeb;--muted:#a1ada8;--line:#2a3531;--accent:#5cc3b1;--accent-soft:#1b302b;--warn:#e9a37a;--warn-soft:#33241b;--ok:#7fd39b;--ok-soft:#1a2f21;--attn:#e8c26a;--attn-soft:#332a15;--crit:#f09a92;--crit-soft:#3a1f1d;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.65;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:860px;margin:0 auto}
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:14px;flex-wrap:wrap}
+.mark{font-family:var(--f-mono);font-weight:500;font-size:14px;letter-spacing:.06em;color:var(--fg);text-decoration:none}
+nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav a{color:var(--muted);text-decoration:none;font-size:15px}
+nav a:hover{color:var(--accent)}
+section{padding-block:64px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.5rem);line-height:1.06;font-weight:700;letter-spacing:-.025em}
+h1 .b{color:var(--accent)}
+h2{font-size:clamp(1.5rem,3.6vw,2.05rem);font-weight:700;letter-spacing:-.015em;line-height:1.15}
+h3{font-size:1.15rem;font-weight:500;line-height:1.3}
+.eyebrow{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+.intro{color:var(--muted);max-width:64ch;margin:14px 0 0}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:40px;align-items:start}
+.hero-text{min-width:0;grid-column:1;grid-row:1}
+.photo{grid-column:2;grid-row:1;margin:6px 0 0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--surface);aspect-ratio:4/5;max-width:100%}
+.photo img{display:block;width:100%;height:100%;object-fit:cover}
+.avail{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-bottom:22px}
+.avail i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.lead{font-size:1.15rem;max-width:60ch;margin:24px 0 0}
+.who{font-family:var(--f-mono);font-size:13px;color:var(--muted);margin-top:22px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:6px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--accent);font-family:var(--f-body);cursor:pointer;background:transparent;color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--bg)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:44px}
+.facts div{background:var(--surface);padding:16px 18px}
+.facts b{display:block;font-family:var(--f-display);font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+.facts span{font-size:14px;color:var(--muted);line-height:1.4;display:block}
+
+.langs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0;margin-top:32px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.lang{padding:20px 22px;min-width:0}
+.lang h3{font-family:var(--f-mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:12px}
+.lang ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lang li{font-family:var(--f-display);font-size:1.02rem;line-height:1.35}
+.lang li small{display:block;font-family:var(--f-body);font-size:14px;color:var(--muted)}
+.bridge{background:var(--accent);color:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px 12px;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--f-mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.after-langs{margin:22px 0 0;max-width:66ch}
+
+.problems{display:grid;gap:18px;margin-top:32px}
+.prob{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.prob .q{background:var(--warn-soft);color:var(--warn);padding:14px 20px;font-family:var(--f-display);font-weight:500;font-size:1.12rem}
+.prob .body{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px 26px;padding:18px 20px 20px}
+.prob .body>div{min-width:0}
+.lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.prob p{margin:0;font-size:16px}
+.proof{border-top:1px dashed var(--line);padding:12px 20px;font-size:15px;color:var(--muted)}
+.proof b{color:var(--accent);font-weight:600}
+
+.steps{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;counter-reset:s}
+.steps li{counter-increment:s;border-top:2px solid var(--accent);padding-top:12px}
+.steps li::before{content:"Etapa " counter(s);font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block;margin-bottom:4px}
+.steps p{margin:6px 0 0;font-size:15.5px;color:var(--muted)}
+.people{margin:32px 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px;align-items:start;border-top:1px solid var(--line);padding-top:28px}
+.people p{margin:0}
+.people .big{font-family:var(--f-display);font-size:1.35rem;line-height:1.3;font-weight:500}
+
+.panel{margin-top:30px;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.panel-head .t{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.weeks{display:flex;gap:6px;flex-wrap:wrap}
+.weeks button{font-family:var(--f-mono);font-size:13px;padding:5px 11px;border-radius:5px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.weeks button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.panel-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 18px 6px}
+.pill{font-family:var(--f-mono);font-size:12.5px;padding:3px 10px;border-radius:999px;font-weight:500}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.attn{background:var(--attn-soft);color:var(--attn)} .pill.crit{background:var(--crit-soft);color:var(--crit)}
+.panel-status h3{font-size:1.1rem}
+.table-wrap{overflow-x:auto;padding:4px 18px 4px}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:500;padding:10px 8px;border-bottom:1px solid var(--line)}
+td{padding:11px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;vertical-align:middle}
+td.num{font-family:var(--f-mono);font-size:14.5px}
+.hist{display:flex;gap:4px}
+.hist i{width:10px;height:10px;border-radius:2px;display:inline-block;background:var(--line)}
+.hist i.ok{background:var(--ok)} .hist i.attn{background:var(--attn)} .hist i.crit{background:var(--crit)}
+.hist i.now{outline:2px solid var(--fg);outline-offset:1px}
+.panel-foot{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px 24px;padding:16px 18px 20px}
+.panel-foot p{margin:0;font-size:15.5px}
+.disclaimer{font-size:13.5px;color:var(--muted);margin:12px 0 0}
+
+.deal{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.deal>div{border:1px solid var(--line);border-radius:10px;padding:20px;background:var(--surface)}
+.deal p{margin:8px 0 0;font-size:16px;color:var(--muted)}
+.honest{margin-top:22px;padding:18px 22px;border-left:3px solid var(--accent);background:var(--accent-soft);max-width:68ch;border-radius:0}
+.honest p{margin:0}
+
+.cases{display:grid;gap:22px;margin-top:32px}
+.case{border:1px solid var(--line);border-radius:10px;padding:22px;background:var(--surface)}
+.case.feature{border-color:var(--accent)}
+.case .meta{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.case dl{display:grid;grid-template-columns:170px 1fr;gap:10px 18px;margin:16px 0 0}
+.case dt{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.case dd{margin:0;min-width:0;font-size:16px}
+.earlier{margin-top:26px;font-size:15.5px;color:var(--muted);max-width:70ch}
+.certs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:28px}
+.cert{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.cert b{font-family:var(--f-display);font-size:1.05rem;display:block}
+.cert span{font-size:14px;color:var(--muted);line-height:1.4;display:block}
+.cert.key{border-color:var(--accent)}
+.cert.key b{color:var(--accent)}
+.edu{margin-top:24px;font-size:16px;color:var(--muted)}
+.contact{background:var(--accent-soft);border-radius:12px;padding:32px}
+.addr{font-family:var(--f-mono);font-size:15px;user-select:all;word-break:break-all}
+.copied{font-size:14px;color:var(--accent);margin-left:8px}
+footer{padding-block:28px;color:var(--muted);font-size:14px}
+@media (max-width:720px){
+  .hero{grid-template-columns:1fr;gap:20px}
+  .photo{grid-column:1;grid-row:1;width:150px;margin:0}
+  .hero-text{grid-row:2}
+}
+@media (max-width:620px){
+  .langs{grid-template-columns:1fr}
+  .bridge{writing-mode:horizontal-tb;transform:none;padding:10px}
+  .people{grid-template-columns:1fr}
+  .case dl{grid-template-columns:1fr;gap:2px}.case dd{margin-bottom:10px}
+  .contact{padding:22px}
+}
+@media (prefers-reduced-motion:no-preference){.btn{transition:transform .15s}.btn:hover{transform:translateY(-1px)}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="mark" href="#topo">PRS · Contratos &amp; Delivery</a>
+    <nav aria-label="Seções"><ul>
+      <li><a href="#problemas">O que resolvo</a></li>
+      <li><a href="#metodo">Como trabalho</a></li>
+      <li><a href="#painel">Painel</a></li>
+      <li><a href="#cases">Cases</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="topo">
+    <div class="hero">
+    <figure class="photo"><img src="paulo-santos.jpg" alt="Paulo Ricardo dos Santos, de terno azul-marinho e gravata, sorrindo" width="640" height="800"></figure>
+    <div class="hero-text">
+    <span class="avail"><i aria-hidden="true"></i>Disponível para gestão de contratos de outsourcing de TI, no setor público e privado</span>
+    <h1>O contrato fala uma língua. A fábrica fala outra. <span class="b">Eu respondo pelas duas.</span></h1>
+    <p class="lead">Sua empresa ganhou o contrato. Agora alguém precisa garantir que o que foi prometido ao cliente seja entregue pela equipe, no prazo e dentro do nível de serviço, sem que a diretoria descubra os problemas no fechamento do mês.</p>
+    <p class="who">Paulo Ricardo dos Santos · Gerente de Projetos e Contratos de TI · PMP® · PMI-ACP®</p>
+    <div class="cta">
+      <a class="btn primary" href="#contato">Conversar sobre o seu contrato</a>
+      <a class="btn" href="#painel">Ver como acompanho</a>
+    </div>
+    </div>
+    </div>
+    <div class="facts" role="list">
+      <div role="listitem"><b>15+ anos</b><span>em gestão de projetos e contratos de TI</span></div>
+      <div role="listitem"><b>Até 5</b><span>contratos conduzidos em paralelo, com dezenas de pessoas e sistemas</span></div>
+      <div role="listitem"><b>~100</b><span>profissionais na fábrica de software que lidero hoje</span></div>
+      <div role="listitem"><b>100%</b><span>dos compromissos mínimos contratuais cobertos no portfólio atual</span></div>
+    </div>
+  </section>
+
+  <section id="linguas">
+    <p class="eyebrow">O papel</p>
+    <h2>Duas línguas, uma só responsabilidade</h2>
+    <p class="intro">Em todo contrato de outsourcing existem duas conversas acontecendo ao mesmo tempo. Quando ninguém faz a ponte entre elas, o cliente se sente mal atendido e a equipe se sente mal compreendida.</p>
+    <div class="langs">
+      <div class="lang">
+        <h3>O que o contrato pergunta</h3>
+        <ul>
+          <li>Estamos dentro do nível de serviço?<small>SLAs, indicadores, prazos de atendimento</small></li>
+          <li>Onde está a evidência?<small>relatórios para o gestor e o fiscal do contrato</small></li>
+          <li>Isso estava no escopo?<small>mudanças, aditivos, novas demandas</small></li>
+          <li>Vai haver glosa?<small>impacto financeiro do descumprimento</small></li>
+        </ul>
+      </div>
+      <div class="bridge" aria-hidden="true">eu traduzo</div>
+      <div class="lang">
+        <h3>O que a fábrica responde</h3>
+        <ul>
+          <li>Temos capacidade para isso?<small>pessoas, perfis, dependências</small></li>
+          <li>O que entra primeiro?<small>backlog, prioridade, papel do PO</small></li>
+          <li>Quando fica pronto?<small>sprint, release, implantação</small></li>
+          <li>Por que atrasou?<small>impedimentos, defeitos, retrabalho</small></li>
+        </ul>
+      </div>
+    </div>
+    <p class="after-langs">Comecei a carreira como desenvolvedor, passei a gerente de projetos e hoje sou gerente de contratos e preposto junto ao cliente. Por isso entendo o que a equipe quer dizer quando explica um atraso, e sei como isso precisa ser dito para quem assina o contrato.</p>
+  </section>
+
+  <section id="problemas">
+    <p class="eyebrow">O que você me contrata para resolver</p>
+    <h2>Três frases que um diretor de operações conhece bem</h2>
+    <div class="problems">
+      <article class="prob">
+        <div class="q">"A glosa chegou e ninguém viu o desvio vindo."</div>
+        <div class="body">
+          <div><span class="lbl">O que custa</span><p>Margem do contrato, desgaste com o cliente e, no setor público, histórico que pesa na próxima licitação.</p></div>
+          <div><span class="lbl">O que eu faço</span><p>Acompanho os indicadores do contrato toda semana. Desvio identificado vira plano de ação e comunicação à diretoria antes do fechamento do período.</p></div>
+        </div>
+        <div class="proof"><b>Já fiz:</b> portfólio de contratos com CAIXA, Ministério da Gestão e Inovação, Ministério da Defesa e Centro de Computação da Aeronáutica, com 100% dos compromissos mínimos cobertos mesmo com mudanças de escopo e picos de volume.</div>
+      </article>
+      <article class="prob">
+        <div class="q">"O cliente pede tudo como urgente e a fábrica não sai do lugar."</div>
+        <div class="body">
+          <div><span class="lbl">O que custa</span><p>A equipe troca de tarefa o tempo todo, o que importa atrasa e o cliente deixa de perceber o valor que está pagando.</p></div>
+          <div><span class="lbl">O que eu faço</span><p>Trabalho ao lado do PO do cliente para que ele assuma o papel de priorizar por valor. A fila passa a ter ordem, e a ordem passa a ter dono.</p></div>
+        </div>
+        <div class="proof"><b>Já fiz:</b> veja o case de priorização mais abaixo.</div>
+      </article>
+      <article class="prob">
+        <div class="q">"Tenho vários contratos rodando e não sei qual está em risco."</div>
+        <div class="body">
+          <div><span class="lbl">O que custa</span><p>A diretoria reage ao contrato que reclama mais alto, não ao que está mais perto de dar problema.</p></div>
+          <div><span class="lbl">O que eu faço</span><p>Conduzo até cinco contratos em paralelo com a mesma régua: indicadores, riscos e decisões pendentes de cada um, na mesma cadência.</p></div>
+        </div>
+        <div class="proof"><b>Já fiz:</b> atuação no PMO da Datainfo com gerenciamento de portfólio e, hoje, gestão simultânea de contratos para quatro órgãos federais.</div>
+      </article>
+    </div>
+  </section>
+
+  <section id="metodo">
+    <p class="eyebrow">Como eu trabalho</p>
+    <h2>Nível de serviço não se cumpre no fim do mês. Se cumpre toda semana.</h2>
+    <ol class="steps">
+      <li><h3>Ler o contrato</h3><p>Obrigações, níveis de serviço e prazos viram uma lista de compromissos que dá para acompanhar.</p></li>
+      <li><h3>Ler a fábrica</h3><p>Capacidade, perfis, backlog e dependências do cliente, com o PO no papel certo.</p></li>
+      <li><h3>Medir toda semana</h3><p>Cada compromisso tem indicador, fonte de dado e responsável.</p></li>
+      <li><h3>Levar a decisão junto</h3><p>Quando algo sai do rumo, a diretoria recebe o problema, o impacto e a proposta de ação.</p></li>
+    </ol>
+    <div class="people">
+      <p class="big">O meu resultado vem das pessoas que trabalham comigo.</p>
+      <p>Coordeno equipes de desenvolvimento, manutenção e implantação com Scrum, Kanban ou gestão híbrida, conforme o contrato pede. Meu trabalho é dar à equipe clareza sobre o que importa e proteção contra o que não importa, para que ela entregue o que foi combinado.</p>
+    </div>
+  </section>
+
+  <section id="painel">
+    <p class="eyebrow">Mostrar, não dizer</p>
+    <h2>Quatro semanas de um contrato, como a diretoria acompanharia</h2>
+    <p class="intro">Escolha a semana. Na segunda, um desvio aparece cedo. Nas seguintes, o plano de ação recupera os indicadores antes do fechamento.</p>
+    <div class="panel">
+      <div class="panel-head">
+        <span class="t">Contrato de fábrica de software · exemplo</span>
+        <div class="weeks" role="group" aria-label="Semana">
+          <button type="button" id="w1" data-w="0" aria-pressed="false">Semana 1</button>
+          <button type="button" id="w2" data-w="1" aria-pressed="true">Semana 2</button>
+          <button type="button" id="w3" data-w="2" aria-pressed="false">Semana 3</button>
+          <button type="button" id="w4" data-w="3" aria-pressed="false">Semana 4</button>
+        </div>
+      </div>
+      <div class="panel-status" aria-live="polite">
+        <span class="pill" id="pstatus"></span>
+        <h3 id="phead"></h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Indicador</th><th>Meta</th><th>Semana</th><th>Histórico</th></tr></thead>
+          <tbody id="prows"></tbody>
+        </table>
+      </div>
+      <div class="panel-foot">
+        <div><span class="lbl">O que está acontecendo</span><p id="pwhat"></p></div>
+        <div><span class="lbl">O que levo à diretoria</span><p id="pask"></p></div>
+      </div>
+    </div>
+    <p class="disclaimer">Exemplo ilustrativo com dados fictícios. Os indicadores reais variam conforme o contrato.</p>
+  </section>
+
+  <section id="acordo">
+    <p class="eyebrow">O acordo</p>
+    <h2>O que eu garanto e o que eu preciso de você</h2>
+    <div class="deal">
+      <div><h3>Da minha parte</h3><p>Você fica sabendo cedo quando um contrato sai do rumo, com o contexto e o plano de ação. O cliente recebe evidência do que foi entregue. A equipe sabe o que vem primeiro.</p></div>
+      <div><h3>Da sua parte</h3><p>Acesso à operação e aos dados do contrato, autonomia para alinhar prioridades com o cliente e decisões em tempo hábil quando eu levar uma escolha à diretoria.</p></div>
+    </div>
+    <div class="honest"><p>Glosa pode acontecer. Produtividade, dependências do cliente e fatores fora do controle de qualquer gestor existem em todo contrato. Não prometo glosa zero. Prometo que ela não vai pegar você de surpresa e que o impacto será mitigado.</p></div>
+  </section>
+
+  <section id="cases">
+    <p class="eyebrow">Cases</p>
+    <h2>Onde já fiz isso</h2>
+    <div class="cases">
+      <article class="case feature">
+        <div class="meta">Contrato de fábrica de software · a virada</div>
+        <h3>Quando tudo é urgente, nada anda</h3>
+        <dl>
+          <dt>O que acontecia</dt><dd>Demandas chegavam sem priorização clara. A equipe trocava de tarefa com frequência, as entregas atrasavam e o cliente deixava de enxergar valor no que recebia.</dd>
+          <dt>O que eu decidi</dt><dd>Trabalhar de perto com o PO do cliente para que ele entendesse e assumisse o seu verdadeiro papel: decidir o que entra primeiro com base no valor para o negócio.</dd>
+          <dt>O que isso mostra</dt><dd>Muitos atrasos de fábrica não são problema de capacidade. São problema de priorização, e isso se resolve com o cliente, não só com a equipe.</dd>
+        </dl>
+      </article>
+      <article class="case">
+        <div class="meta">Resource IT Solutions · 2024 – atual</div>
+        <h3>Portfólio de contratos com a Administração Pública Federal</h3>
+        <dl>
+          <dt>Contexto</dt><dd>Fábrica de software com cerca de 100 profissionais para a CAIXA e contratos com MGI, Ministério da Defesa e Centro de Computação da Aeronáutica.</dd>
+          <dt>Meu papel</dt><dd>Gerente de Projetos, Contract Manager e preposto.</dd>
+          <dt>O que conduzi</dt><dd>Gestão de SLAs e KPIs, priorização com stakeholders, relatórios executivos, governança ágil e monitoramento preditivo de indicadores.</dd>
+          <dt>Resultado</dt><dd>100% de cobertura dos compromissos mínimos contratuais, menos desvios de nível de serviço e mais previsibilidade nas entregas.</dd>
+        </dl>
+      </article>
+      <article class="case">
+        <div class="meta">Datainfo · CAIXA · Curitiba/PR · 2019 – 2024</div>
+        <h3>Transformação ágil do núcleo de desenvolvimento PEDES</h3>
+        <dl>
+          <dt>Contexto</dt><dd>Contrato de fábrica de software do núcleo regional de desenvolvimento descentralizado de sistemas da CAIXA.</dd>
+          <dt>Meu papel</dt><dd>Gerente de projetos, Scrum Master e Coach Ágil.</dd>
+          <dt>O que conduzi</dt><dd>Roadmap de produtos em desenvolvimento paralelo, implantação encadeada de versões, planejamento de ciclos e priorização de backlog.</dd>
+        </dl>
+      </article>
+    </div>
+    <p class="earlier">Antes disso: fábrica de software da CAIXA em Salvador com sistemas legados e novos projetos, implantação de ERP e PMO na Datainfo, projetos de produto na Senior Sistemas, múltiplos projetos de TI na Neodin e cinco anos como desenvolvedor.</p>
+  </section>
+
+  <section id="credenciais">
+    <p class="eyebrow">Credenciais</p>
+    <h2>O que sustenta o método</h2>
+    <div class="certs">
+      <div class="cert key"><b>PMP®</b><span>Project Management Institute · válida até 10/2029</span></div>
+      <div class="cert key"><b>PMI-ACP®</b><span>Project Management Institute · válida até 05/2027</span></div>
+      <div class="cert"><b>PSM I e PSPO I</b><span>Scrum.org</span></div>
+      <div class="cert"><b>KSD</b><span>Kanban System Design · Kanban University</span></div>
+      <div class="cert"><b>AMPC</b><span>Agile Metrics Professional Certified</span></div>
+      <div class="cert"><b>SFC · SSYB · M3.0</b><span>Scrum Fundamentals, Six Sigma Yellow Belt, Management 3.0</span></div>
+    </div>
+    <p class="edu">MBA em Gerenciamento de Projetos pela Fundação Getulio Vargas · Inglês avançado</p>
+  </section>
+
+  <section id="contato">
+    <div class="contact">
+      <p class="eyebrow">Vamos conversar</p>
+      <h2>Me conte qual contrato está tirando o seu sono</h2>
+      <p style="margin:14px 0 20px;max-width:60ch">Um contrato novo para estruturar, uma operação sob SLA que precisa de controle ou um portfólio que a diretoria não enxerga. Retorno para entender o contexto.</p>
+      <p style="margin:0 0 8px"><span class="addr" id="email">prsricardo@gmail.com</span><button class="btn" id="copy" type="button" style="margin-left:10px;padding:5px 12px;font-size:14px">Copiar e-mail</button><span class="copied" id="copied" aria-live="polite"></span></p>
+      <p style="margin:0"><a href="https://www.linkedin.com/in/gppaulorsantos/" target="_blank" rel="noopener">linkedin.com/in/gppaulorsantos</a></p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">© 2026 Paulo Ricardo dos Santos · Layout inspirado em RyanFitzgerald/devportfolio (MIT)</div></footer>
+
+<script>
+(function(){
+  var ind=[
+    {n:"Ordens de serviço no prazo",m:"≥ 95%",v:["97%","91%","94%","98%"],s:["ok","crit","attn","ok"]},
+    {n:"Entrega planejada x realizada",m:"≥ 90%",v:["94%","82%","88%","95%"],s:["ok","crit","attn","ok"]},
+    {n:"Defeitos em homologação",m:"≤ 5",v:["3","7","5","2"],s:["ok","crit","ok","ok"]},
+    {n:"Demandas priorizadas pelo PO",m:"100%",v:["100%","60%","90%","100%"],s:["ok","crit","attn","ok"]}
+  ];
+  var wk=[
+    {st:"ok",lab:"No rumo",h:"Todos os indicadores dentro da meta",what:"Operação estável. Fila priorizada e equipe com capacidade compatível com a demanda.",ask:"Nenhuma decisão pendente. Apenas o acompanhamento de rotina."},
+    {st:"crit",lab:"Atenção",h:"Desvio identificado na semana em que nasceu",what:"Demandas urgentes entraram sem passar pela priorização do PO. A equipe trocou de tarefa, a entrega caiu e os defeitos subiram.",ask:"Risco de glosa no fechamento se nada mudar. Proposta: reunião semanal de priorização com o PO do cliente, a partir desta semana."},
+    {st:"attn",lab:"Em recuperação",h:"Plano de ação em andamento",what:"Priorização semanal com o PO funcionando. Defeitos de volta à meta, entrega ainda um pouco abaixo e subindo.",ask:"Manter o plano. Sem nova decisão necessária, apenas confirmação de que a reunião com o cliente segue na agenda."},
+    {st:"ok",lab:"No rumo",h:"Indicadores recuperados antes do fechamento",what:"Todos os indicadores de volta à meta antes do fim do período de medição.",ask:"Registrar a prática de priorização semanal como rito fixo do contrato."}
+  ];
+  var btns=document.querySelectorAll('.weeks button');
+  function render(w){
+    var d=wk[w],p=document.getElementById('pstatus');
+    p.className='pill '+d.st;p.textContent=d.lab;
+    document.getElementById('phead').textContent=d.h;
+    document.getElementById('pwhat').textContent=d.what;
+    document.getElementById('pask').textContent=d.ask;
+    var html='';
+    ind.forEach(function(r){
+      var dots='';
+      for(var i=0;i<4;i++){dots+='<i class="'+(i<=w?r.s[i]:'')+(i===w?' now':'')+'" title="Semana '+(i+1)+'"></i>';}
+      html+='<tr><td>'+r.n+'</td><td class="num">'+r.m+'</td><td class="num"><span class="pill '+r.s[w]+'">'+r.v[w]+'</span></td><td><span class="hist" aria-label="Histórico até a semana '+(w+1)+'">'+dots+'</span></td></tr>';
+    });
+    document.getElementById('prows').innerHTML=html;
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.w===w));});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){render(+b.dataset.w);});});
+  render(1);
+  document.getElementById('copy').addEventListener('click',function(){
+    var t=document.getElementById('email').textContent,m=document.getElementById('copied');
+    function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('email'));var s=getSelection();s.removeAllRanges();s.addRange(r);m.textContent='Selecionado, use Ctrl+C';}
+    try{navigator.clipboard.writeText(t).then(function(){m.textContent='Copiado';},fallback);}catch(e){fallback();}
+  });
+})();
+</script>
+</body>
+</html>
